@@ -1,18 +1,33 @@
 package de.hshl.isd.quizassignment1
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import de.hshl.isd.quizassignment1.ui.main.MainFragment
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import de.hshl.isd.quizassignment1.ui.theme.QuizAssignment1Theme
+import de.hshl.isd.quizcompose.MainViewModel
+import de.hshl.isd.quizcompose.NavigationHost
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
+    private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow()
+        setContent {
+            MainContent(viewModel = mainViewModel)
         }
     }
+}
+
+@Composable
+fun MainContent(viewModel: MainViewModel) {
+    val navController = rememberNavController()
+    NavigationHost(navController, viewModel)
 }
